@@ -1,12 +1,14 @@
 const mongoose = require("mongoose"),
   passportLocalMongoose = require("passport-local-mongoose");
-
+const Joi = require('joi');
 const adminSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    trim: true,
-    required:true,
-  },
+  firstName: Joi.string()
+  .required()
+  .error(() => {
+    return {
+      message: 'Firstname name is required.',
+    };
+  }),
   lastName: {
     type: String,
     trim: true,
@@ -15,7 +17,7 @@ const adminSchema = new mongoose.Schema({
   username: {
     type: String,
     trim: true,
-    required:true,
+    required:[true, 'User name required'],
     unique:true,
   },
   email: {
@@ -41,7 +43,6 @@ const adminSchema = new mongoose.Schema({
   mobile:Number,
   address: {
     type: String,
-    unique:true,
     required:true,
   },
 });

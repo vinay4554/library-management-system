@@ -1,7 +1,6 @@
 const express=require("express");
 const { v4: uuidv4 } = require('uuid');
 const router=express.Router();
-
 const Book=require("../models/bookschema");
 const Admin=require("../models/adminschema");
 const passport = require("passport");
@@ -107,7 +106,7 @@ router.post("/addbook",(req,res) => {
         }
         else{
              if(foundbook.length>0){
-                 res.send("A book with same datails already exists !")
+                 res.redirect("/dashboard");
              }
              else{
                 const book=new Book({
@@ -145,6 +144,7 @@ router.get("/deletebook",(req,res) => {
 });
 // Delete Book
 router.get("/deletebook/:bookid",(req,res) => {
+
    Book.deleteOne(
        {_id:req.params.bookid},
        (err) => {

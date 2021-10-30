@@ -34,7 +34,7 @@ app.get("/",(req,res) => {
 
 app.use(userroutes);
 app.use(adminroutes);
-
-app.listen(process.env.PORT || 8000,() => {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT,() => {
     console.log("Server Started");
 })
