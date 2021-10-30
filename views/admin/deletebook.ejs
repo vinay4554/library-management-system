@@ -1,0 +1,14 @@
+<%- include("../partials/header") -%>
+<%- include("navbar") -%>
+<div class="deletebooks">
+  <%  bookdata.forEach(singlebook => { %>
+     <div class="deletesinglebook">
+       <h3>Title : <%= singlebook.title %></h3>
+       <h4>Author :<%= singlebook.author %></h4>
+       <h4>Category :<%= singlebook.category %></h4>
+       <h2>Stock : <%= singlebook.stock%></h2>
+      <a href="/deletebook/<%= singlebook._id %>">Delete</a>
+     </div>
+    <% }) %>
+</div>
+<%- include("../partials/footer") -%>

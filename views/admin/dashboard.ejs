@@ -1,0 +1,108 @@
+<%- include("../partials/header") -%>
+<div class="dahboard">
+    <div class="dashboard-header">
+        <div>
+            <h2>Dashboard</h2>
+        </div>
+     <div class="logoutbar">
+    <p>Welcome <span class="username"> <%= ""+admindata.username %></span>    </p>  
+     <p><a href="/logout">Logout</a></p>
+     <p><a href="/profile/<%= admindata._id %>
+        ">Profile</a></p>
+     </div>
+    </div>
+    <div class="profile-activities">
+        <div class="adminactivities">
+            <a href="/addbook">Add Book</a>
+            <a href="/deletebook">Delete Book</a>
+            <a href="/updatebook">Update Book</a>
+            <a href="/searchbooks">Search Books</a>
+            <a href="/adminregistration">Add Librarian</a>
+            <a href="/adminregistration">Delete Librarian</a>
+            <a href="/librariandetails">Users Information</a>
+        </div>
+        <div class="admin-data">
+            <div class="recent-activities">
+                <div class="activity-header">
+                    <h2>Recent Actvities</h2>
+                </div>
+                <div class="activity-type head">
+                    <div>
+                        Info
+                    </div>
+                    <div>
+                        Category
+                    </div>
+                    <div>
+                        Date
+                    </div>
+                </div>
+                <div class="activity-type data">
+                  <div>
+                      vinay returned the book monkeys
+                  </div>
+                  <div>
+                      Return
+                  </div>
+                  <div>
+                      <p>Issue Data : 26-12-2000</p>
+                      <p>Return Data : 26-1-2001</p>
+                  </div>
+                </div>
+                <div class="activity-type data">
+                    <div>
+                        vinay returned the book monkeys
+                    </div>
+                    <div>
+                        Return
+                    </div>
+                    <div>
+                        <p>Issue Data : 26-12-2000</p>
+                        <p>Return Data : 26-1-2001</p>
+                    </div>
+                  </div>
+                  <div class="activity-type data">
+                    <div>
+                        vinay returned the book monkeys
+                    </div>
+                    <div>
+                        Return
+                    </div>
+                    <div>
+                        <p>Issue Data : 26-12-2000</p>
+                        <p>Return Data : 26-1-2001</p>
+                    </div>
+                  </div>
+                  <div class="activity-type data">
+                    <div>
+                        vinay returned the book monkeys
+                    </div>
+                    <div>
+                        Return
+                    </div>
+                    <div>
+                        <p>Issue Data : 26-12-2000</p>
+                        <p>Return Data : 26-1-2001</p>
+                    </div>
+                  </div>
+                  <div class="activity-type data">
+                    <div>
+                        vinay returned the book monkeys
+                    </div>
+                    <div>
+                        Return
+                    </div>
+                    <div>
+                        <p>Issue Data : 26-12-2000</p>
+                        <p>Return Data : 26-1-2001</p>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+    
+    
+        </div>
+    </div>
+</div>
+<%- include("../partials/footer") -%>
