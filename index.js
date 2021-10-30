@@ -35,6 +35,6 @@ app.get("/",(req,res) => {
 app.use(userroutes);
 app.use(adminroutes);
 
-app.listen(3000,() => {
+app.listen(process.env.PORT || 8000,() => {
     console.log("Server Started");
 })
