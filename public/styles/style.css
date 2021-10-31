@@ -87,10 +87,15 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="tel"],
-input[type="number"],
-textarea {
+input[type="number"] {
   width: 90%;
   padding: 10px 15px;
+  border: none;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+textarea {
+  width: 90%;
   border: none;
   margin-bottom: 5px;
   border-radius: 5px;
@@ -261,7 +266,7 @@ label {
 }
 /* nav bar */
 .nav {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -284,7 +289,7 @@ label {
   background-color: rgb(200, 200, 200);
   padding: 20px 10px;
   width: 50%;
-  margin: 5% 25%;
+  margin: 2% 25%;
 }
 .book-add {
   display: flex;
@@ -317,7 +322,7 @@ textarea {
   justify-content: center;
   align-items: center;
   grid-gap: 10px 20px;
-  margin: 80px 2%;
+  margin: 30px 2%;
 }
 .deletesinglebook {
   color: white;
@@ -335,7 +340,7 @@ textarea {
   background-color: rgb(200, 200, 200);
   padding: 20px 10px;
   width: 50%;
-  margin: 5% 25%;
+  margin: 1% 25%;
 }
 .update-data {
   display: flex;
@@ -348,7 +353,7 @@ textarea {
   justify-content: center;
   align-items: center;
   grid-gap: 10px 20px;
-  margin: 40px 2%;
+  margin: 20px 2%;
 }
 .book-data {
   color: white;
@@ -358,7 +363,7 @@ textarea {
   text-align: justify;
 }
 .search-book {
-  margin-top: 80px;
+  margin-top: 20px;
   padding: 20px 10px;
   background-color: black;
   text-align: center;
@@ -464,4 +469,23 @@ select {
     0px 12px 2px rgba(0, 0, 0, 0.7);
   margin-top: 75px;
   text-align: center;
+}
+.alert-message {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  padding: 5px 20px 5px 25px;
+  width: 50%;
+  margin: 20px 25% 0;
+  background-color: green;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+#close-button {
+  cursor: pointer;
+}
+.remove-alert {
+  display: none;
 }

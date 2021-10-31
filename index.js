@@ -2,12 +2,14 @@ const express=require("express");
 const bodyParser=require("body-parser");
 const mongoose=require("mongoose");
 const session=require("express-session");
+const flash = require('connect-flash');
 const passport=require("passport");
 const Admin=require("./models/adminschema");
 const app=express();
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
 app.use(express.static("public"));
+app.use(flash());
 app.use(session({
     secret:"our little secret Key",
     resace:false,

@@ -1,4 +1,5 @@
 const express=require("express");
+const flash = require('connect-flash');
 const { v4: uuidv4 } = require('uuid');
 const router=express.Router();
 const Book=require("../models/bookschema");
@@ -39,21 +40,22 @@ router.post("/adminregister",(req,res) => {
 // // Admin Login
 
 router.post("/adminlogin",(req,res) => {
-    const admin=new Admin({
-       username:req.body.username,
-       password:req.body.password
-    });
-    req.login(admin,(err) => {
-        if(err){
-            console.log(err);
-            res.redirect("/adminlogin");
-        }
-        else{
-            passport.authenticate("local")(req,res,() => {
-                    res.redirect("/dashboard");
-            })
-        }
-    })
+        const admin=new Admin({
+            username:req.body.username,
+            password:req.body.password
+         });
+         req.login(admin,(err) => {
+             if(err){
+                 console.log(err);
+                 res.redirect("/adminlogin");
+             }
+             else{
+                 passport.authenticate("local")(req,res,() => {
+                         res.redirect("/dashboard");
+                 })
+             }
+         })
+    
 });
 
 // Admin logout
@@ -84,12 +86,17 @@ router.get("/adminregistration",(req,res) => {
 });
 // admin Login Page
 router.get("/adminlogin",(req,res) => {
-    res.render("admin/adminlogin");
+    if(req.isAuthenticated()){
+   res.redirect("/dashboard");
+    }
+    else{
+        res.render("admin/adminlogin");
+    }
 });
 // Adding Book route
 router.get("/addbook",(req,res) => {
     if(req.isAuthenticated()){
-        res.render("admin/addbook");
+        res.render("admin/addbook",{message:req.flash("message")});
     }
     else{
         res.send("You dont have permission To make Changes");
@@ -118,7 +125,8 @@ router.post("/addbook",(req,res) => {
                     category : req.body.category
                 });
                book.save();
-               res.redirect("/dashboard");
+               req.flash('message', 'Book Added Sucessfully');
+               res.redirect("/addbook");
              }
         }
     })
@@ -132,7 +140,7 @@ router.get("/deletebook",(req,res) => {
                 console.log(err);
             }
             else{
-                res.render("admin/deletebook",{bookdata:book});
+                res.render("admin/deletebook",{bookdata:book,deletemessage:req.flash("deletemessage")});
             }
         });
     }
@@ -152,7 +160,8 @@ router.get("/deletebook/:bookid",(req,res) => {
                console.log(err);
            }
            else{
-               res.redirect("/dashboard");
+            req.flash('deletemessage', 'Book Deleted Sucessfully');
+               res.redirect("/deletebook");
            }
        }
        )
@@ -165,7 +174,7 @@ router.get("/updatebook",(req,res) => {
                 console.log(err);
             }
             else{
-                res.render("admin/updatebook",{bookdata:book});
+                res.render("admin/updatebook",{bookdata:book,updatemessage:req.flash("updatemessage")});
             }
         })
     }
@@ -200,7 +209,8 @@ router.post("/updatebook/:bookid",(req,res) => {
             console.log(err);
         }
         else{
-         res.send("book updated Sucessfully")
+         req.flash('updatemessage', 'Book Details Updated Sucessfully');
+        res.redirect("/updatebook");
         }
     })
 });
@@ -228,6 +238,7 @@ router.post("/searchbook",(req,res) => {
         })
     }
     else if(category==="book"){
+        console.log(category);
         Book.find({title:input},(err,books) => {
             res.render("book/displaybooks",{booksdata:books});
         })
@@ -247,8 +258,24 @@ router.get("/profile/:adminid",(req,res) => {
 });
 // Displaying Librarian Details
 router.get("/librariandetails",(req,res) => {
-    Admin.find({post:"librarian"},(err,details) => {
-        res.render("admin/librariandetails",{details:details});
+    if(req.user["post"]==="admin"){
+        Admin.find({post:"librarian"},(err,details) => {
+            res.render("admin/librariandetails",{details:details});
+        })
+    }
+    else{
+        res.send("Dont have permission");
+    }
+});
+// 
+router.get("/deletelibrarian/:id",(req,res) => {
+    Admin.deleteOne({_id:req.params.id},(err) => {
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.redirect("/dashboard");
+        }
     })
 });
 module.exports=router;
