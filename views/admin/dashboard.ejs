@@ -17,9 +17,11 @@
             <a href="/deletebook">Delete Book</a>
             <a href="/updatebook">Update Book</a>
             <a href="/searchbooks">Search Books</a>
+           <% if(admindata.post==="admin") {   %>
             <a href="/adminregistration">Add Librarian</a>
-            <a href="/adminregistration">Delete Librarian</a>
+            <a href="/librariandetails">Delete Librarian</a>
             <a href="/librariandetails">Users Information</a>
+          <%  }   %>
         </div>
         <div class="admin-data">
             <div class="recent-activities">

@@ -8,7 +8,6 @@ const passport = require("passport");
 
 // Admin registration
 router.post("/adminregister",(req,res) => {
-   if(req.isAuthenticated()){
     Admin.register({
         firstName:req.body.firstname,
         lastName:req.body.lastname,
@@ -31,10 +30,7 @@ router.post("/adminregister",(req,res) => {
             })
         }
     });
-   }
-   else{
-       res.send("You Dont have authority");
-   }
+   
 
 });
 // // Admin Login
@@ -77,12 +73,7 @@ router.get("/dashboard",(req,res) => {
 });
 // admin registration Page
 router.get("/adminregistration",(req,res) => {
-    if(req.isAuthenticated()){
         res.render("admin/adminregistration");
-    }
-    else{
-        res.redirect("/");
-    }
 });
 // admin Login Page
 router.get("/adminlogin",(req,res) => {

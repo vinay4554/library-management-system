@@ -1,14 +1,11 @@
 const mongoose = require("mongoose"),
   passportLocalMongoose = require("passport-local-mongoose");
-const Joi = require('joi');
 const adminSchema = new mongoose.Schema({
-  firstName: Joi.string()
-  .required()
-  .error(() => {
-    return {
-      message: 'Firstname name is required.',
-    };
-  }),
+  firstName:{
+    type: String,
+    trim: true,
+    required:true,
+  } ,
   lastName: {
     type: String,
     trim: true,

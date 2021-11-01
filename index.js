@@ -21,7 +21,7 @@ app.use(passport.session());
 const userroutes=require("./routes/user");
 const adminroutes=require("./routes/admin")
 // connecting mongoose
-mongoose.connect("mongodb://localhost:27017/LibraryDB",{   useNewUrlParser: true,
+mongoose.connect("mongodb+srv://vinay45:vinay@cluster0.hgahp.mongodb.net/LibraryDB?retryWrites=true&w=majority",{   useNewUrlParser: true,
 useUnifiedTopology: true})
 .then(() => console.log("Mongodb is connected"))
 .catch((err) => console.log(err));
