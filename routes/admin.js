@@ -2,56 +2,66 @@ const express=require("express");
 const flash = require('connect-flash');
 const { v4: uuidv4 } = require('uuid');
 const router=express.Router();
+const Issue=require("../models/issue");
 const Book=require("../models/bookschema");
-const Admin=require("../models/adminschema");
+const Admin=require("../models/userschema");
 const passport = require("passport");
 
 // Admin registration
 router.post("/adminregister",(req,res) => {
-    Admin.register({
-        firstName:req.body.firstname,
-        lastName:req.body.lastname,
-        username:req.body.username,
-        email:req.body.email,
-        gender:req.body.gender,
-        post:req.body.post,
-        mobile:req.body.mobile,
-        address:req.body.address,
-    },
-    req.body.password,
-    (err,admin) => {
-        if(err){
-            console.log(err);
-            res.render("admin/adminregistration");
-        }
-        else{
-            passport.authenticate("local")(req,res,() => {
-                res.redirect("/dashboard");
-            })
-        }
-    });
+    if(req.isAuthenticated()){
+        Admin.register({
+            firstName:req.body.firstname,
+            lastName:req.body.lastname,
+            username:req.body.username,
+            email:req.body.email,
+            gender:req.body.gender,
+            post:req.body.post,
+            mobile:req.body.mobile,
+            address:req.body.address,
+        },
+        req.body.password,
+        (err,admin) => {
+            if(err){
+                console.log(err);
+                res.render("admin/adminregistration");
+            }
+            else{
+                // passport.authenticate("local")(req,res,() => {
+                    res.redirect("/dashboard");
+                // })
+            }
+        });
+    }
+    else{
+        res.send("not valid");
+    }
    
-
 });
 // // Admin Login
 
-router.post("/adminlogin",(req,res) => {
+router.post("/adminlogin",async (req,res) => {
         const admin=new Admin({
             username:req.body.username,
             password:req.body.password
          });
-         req.login(admin,(err) => {
-             if(err){
-                 console.log(err);
-                 res.redirect("/adminlogin");
-             }
-             else{
-                 passport.authenticate("local")(req,res,() => {
-                         res.redirect("/dashboard");
-                 })
-             }
-         })
-    
+         const user=await Admin.findOne({username:req.body.username});
+         if(user.post!=="user"){
+            req.login(admin,(err) => {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    passport.authenticate("local")(req,res,() => {
+                        res.redirect("/dashboard");
+                    })
+                }
+            })
+         }
+         else{
+             res.send("not valid");
+         }
+        
 });
 
 // Admin logout
@@ -62,9 +72,22 @@ router.get("/logout",(req,res) => {
 });
 // Admin Dashboard
 
-router.get("/dashboard",(req,res) => {
+router.get("/dashboard",async (req,res) => {
     if(req.isAuthenticated()){
-        res.render("admin/dashboard",{admindata:req.user});
+        try{
+            const issuedata=await Issue.find({});
+            if(req.user['post']!=="user")
+            {
+            res.render("admin/dashboard",{admindata:req.user,issuedata:issuedata});
+            }
+            else
+            {
+           res.send("You are not accessed to this");
+            }
+        }catch(err){
+            console.log(err);
+        }
+        
     }
     else{
         res.redirect("/adminlogin");
@@ -78,7 +101,7 @@ router.get("/adminregistration",(req,res) => {
 // admin Login Page
 router.get("/adminlogin",(req,res) => {
     if(req.isAuthenticated()){
-   res.redirect("/dashboard");
+            res.redirect("/dashboard");
     }
     else{
         res.render("admin/adminlogin");
@@ -96,31 +119,27 @@ router.get("/addbook",(req,res) => {
 });
 
 // Adding book details
-router.post("/addbook",(req,res) => {
+router.post("/addbook",async (req,res) => {
 
-    Book.find({title:req.body.title,author:req.body.author},(err,foundbook) => {
-        if(err){
-            console.log(err);
-        }
-        else{
-             if(foundbook.length>0){
-                 res.redirect("/dashboard");
-             }
-             else{
-                const book=new Book({
-                    title : req.body.title,
-                    ISBN : uuidv4(),
-                    stock : req.body.copies,
-                    author : req.body.author,
-                    description : req.body.description,
-                    category : req.body.category
-                });
-               book.save();
-               req.flash('message', 'Book Added Sucessfully');
-               res.redirect("/addbook");
-             }
-        }
-    })
+   const book=await Book.findOne({title:req.body.title,author:req.body.author});
+   if(book){
+       req.flash("message","A book with same details Exist");
+       res.redirect("/addbook");
+   }
+   else{
+    const book=new Book({
+        title : req.body.title,
+        ISBN : uuidv4(),
+        stock : req.body.copies,
+        author : req.body.author,
+        description : req.body.description,
+        category : req.body.category
+    });
+   book.save();
+   req.flash('message', 'Book Added Sucessfully');
+   res.redirect("/addbook");
+   }
+    
     
 });
 // Deleting Book route
@@ -268,5 +287,32 @@ router.get("/deletelibrarian/:id",(req,res) => {
             res.redirect("/dashboard");
         }
     })
+});
+// User details route
+
+router.get("/userdetails", (req,res) => {
+    if(req.isAuthenticated()){
+            if(req.user["post"]==="admin"){
+                Admin.find({post:"user"},(err,details) => {
+                    res.render("admin/userdetails",{userdetails:details});
+                });
+            }
+            else{
+                res.send("Nope ");
+            }
+    }
+    else{
+        res.redirect("/adminlogin");
+    }
+});
+// User Profile Route
+router.get("/userprofile/:userid",async (req,res) => {
+    try{
+           const profiledata=await Admin.findById(req.params.userid);
+           const issue=await Issue.find({"user_id.id":req.params.userid});
+           res.render("admin/userprofile",{profiledata:profiledata,issue:issue});
+    }catch(err){
+         console.log(err);
+    }
 });
 module.exports=router;

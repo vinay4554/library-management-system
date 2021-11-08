@@ -20,7 +20,7 @@
            <% if(admindata.post==="admin") {   %>
             <a href="/adminregistration">Add Librarian</a>
             <a href="/librariandetails">Delete Librarian</a>
-            <a href="/librariandetails">Users Information</a>
+            <a href="/userdetails">Users Information</a>
           <%  }   %>
         </div>
         <div class="admin-data">
@@ -30,75 +30,30 @@
                 </div>
                 <div class="activity-type head">
                     <div>
-                        Info
+                        User Name
                     </div>
                     <div>
-                        Category
+                        Book Name
                     </div>
                     <div>
                         Date
                     </div>
                 </div>
-                <div class="activity-type data">
-                  <div>
-                      vinay returned the book monkeys
-                  </div>
-                  <div>
-                      Return
-                  </div>
-                  <div>
-                      <p>Issue Data : 26-12-2000</p>
-                      <p>Return Data : 26-1-2001</p>
-                  </div>
-                </div>
-                <div class="activity-type data">
-                    <div>
-                        vinay returned the book monkeys
-                    </div>
-                    <div>
-                        Return
-                    </div>
-                    <div>
-                        <p>Issue Data : 26-12-2000</p>
-                        <p>Return Data : 26-1-2001</p>
-                    </div>
-                  </div>
-                  <div class="activity-type data">
-                    <div>
-                        vinay returned the book monkeys
-                    </div>
-                    <div>
-                        Return
-                    </div>
-                    <div>
-                        <p>Issue Data : 26-12-2000</p>
-                        <p>Return Data : 26-1-2001</p>
-                    </div>
-                  </div>
-                  <div class="activity-type data">
-                    <div>
-                        vinay returned the book monkeys
-                    </div>
-                    <div>
-                        Return
-                    </div>
-                    <div>
-                        <p>Issue Data : 26-12-2000</p>
-                        <p>Return Data : 26-1-2001</p>
-                    </div>
-                  </div>
-                  <div class="activity-type data">
-                    <div>
-                        vinay returned the book monkeys
-                    </div>
-                    <div>
-                        Return
-                    </div>
-                    <div>
-                        <p>Issue Data : 26-12-2000</p>
-                        <p>Return Data : 26-1-2001</p>
-                    </div>
-                  </div>
+                <% issuedata.forEach(issue => {  %>
+                    <div class="activity-type data">
+                        <div>
+                           <%= issue.user_id.username %>
+                        </div>
+                        <div>
+                            <%= issue.book_info.title %>
+                        </div>
+                        <div>
+                            <p> <span> Issue Date :  <%= issue.book_info.issueDate.toLocaleDateString() %> </span>
+                            <span> Return Date :  <%= issue.book_info.returnDate.toLocaleDateString() %> </span>
+                            </p>
+                        </div>
+                      </div>
+              <%  }) %>
             </div>
         </div>
     </div>

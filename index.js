@@ -4,15 +4,16 @@ const mongoose=require("mongoose");
 const session=require("express-session");
 const flash = require('connect-flash');
 const passport=require("passport");
-const Admin=require("./models/adminschema");
+const Admin=require("./models/userschema");
 const app=express();
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 app.set("view engine","ejs");
 app.use(express.static("public"));
 app.use(flash());
 app.use(session({
     secret:"our little secret Key",
-    resace:false,
+    resave:false,
     saveUninitialized:false
 }));
 app.use(passport.initialize());
@@ -21,7 +22,7 @@ app.use(passport.session());
 const userroutes=require("./routes/user");
 const adminroutes=require("./routes/admin")
 // connecting mongoose
-mongoose.connect("mongodb+srv://vinay45:vinay@cluster0.hgahp.mongodb.net/LibraryDB?retryWrites=true&w=majority",{   useNewUrlParser: true,
+mongoose.connect("mongodb://localhost:27017/LibraryDB",{   useNewUrlParser: true,
 useUnifiedTopology: true})
 .then(() => console.log("Mongodb is connected"))
 .catch((err) => console.log(err));
@@ -29,6 +30,8 @@ useUnifiedTopology: true})
 passport.use(Admin.createStrategy());
 passport.serializeUser(Admin.serializeUser());
 passport.deserializeUser(Admin.deserializeUser());
+
+
 
 app.get("/",(req,res) => {
     res.render("home");
