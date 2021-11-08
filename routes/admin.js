@@ -9,7 +9,6 @@ const passport = require("passport");
 
 // Admin registration
 router.post("/adminregister",(req,res) => {
-    if(req.isAuthenticated()){
         Admin.register({
             firstName:req.body.firstname,
             lastName:req.body.lastname,
@@ -32,10 +31,6 @@ router.post("/adminregister",(req,res) => {
                 // })
             }
         });
-    }
-    else{
-        res.send("not valid");
-    }
    
 });
 // // Admin Login
