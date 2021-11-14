@@ -26,9 +26,7 @@ router.post("/adminregister",(req,res) => {
                 res.render("admin/adminregistration");
             }
             else{
-                // passport.authenticate("local")(req,res,() => {
                     res.redirect("/dashboard");
-                // })
             }
         });
    
